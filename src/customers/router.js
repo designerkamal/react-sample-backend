@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { getCustomers, seedCustomersData } from "./controller";
+import {
+  getCustomers,
+  getCustomerAddressesById,
+  seedCustomersData,
+} from "./controller";
 
 const router = Router();
 
@@ -10,6 +14,26 @@ router.get("/", function (req, res) {
         success: true,
         total: customers.length,
         customers,
+      });
+    })
+    .catch((err) => {
+      res.send({
+        success: false,
+        error: err.message,
+      });
+    });
+});
+
+router.get("/:customerId", function ({ params }, res) {
+  const { customerId } = params;
+  getCustomerAddressesById(customerId)
+    .then(({ customer, addresses }) => {
+      res.send({
+        success: true,
+        customer: {
+          ...customer,
+          addresses,
+        },
       });
     })
     .catch((err) => {

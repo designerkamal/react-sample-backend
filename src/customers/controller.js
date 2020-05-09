@@ -7,19 +7,21 @@ import { random, add } from "lodash";
 
 export async function getCustomers() {
   try {
-    let customers = await Customer.find({
-      limit: 100,
-    });
+    let customers = await Customer.find();
     return customers;
   } catch (e) {
     return [];
   }
 }
 
-export async function getCustomersById(customerId) {
+export async function getCustomerAddressesById(customerId) {
   try {
-    let customerAddresses = await CustomerAddress.findByCustomerId(customerId);
-    return customerAddresses;
+    let customer = await Customer.findById(customerId);
+    let addresses = await CustomerAddress.findByCustomerId(customerId);
+    return {
+      customer: customer.toJSON(),
+      addresses,
+    };
   } catch (e) {
     return [];
   }
