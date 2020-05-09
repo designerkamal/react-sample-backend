@@ -24,16 +24,13 @@ router.get("/", function (req, res) {
     });
 });
 
-router.get("/:customerId", function ({ params }, res) {
-  const { customerId } = params;
-  getCustomerAddressesById(customerId)
-    .then(({ customer, addresses }) => {
+router.get("/seed", function (req, res) {
+  seedCustomersData(50)
+    .then(({ customers, customerAddresses }) => {
       res.send({
         success: true,
-        customer: {
-          ...customer,
-          addresses,
-        },
+        customers,
+        customerAddresses,
       });
     })
     .catch((err) => {
@@ -44,13 +41,16 @@ router.get("/:customerId", function ({ params }, res) {
     });
 });
 
-router.get("/seed", function (req, res) {
-  seedCustomersData(50)
-    .then(({ customers, customerAddresses }) => {
+router.get("/:customerId", function ({ params }, res) {
+  const { customerId } = params;
+  getCustomerAddressesById(customerId)
+    .then(({ customer, addresses }) => {
       res.send({
         success: true,
-        customers,
-        customerAddresses,
+        customer: {
+          ...customer,
+          addresses,
+        },
       });
     })
     .catch((err) => {

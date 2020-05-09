@@ -15,16 +15,15 @@ export async function getCustomers() {
 }
 
 export async function getCustomerAddressesById(customerId) {
-  try {
-    let customer = await Customer.findById(customerId);
-    let addresses = await CustomerAddress.findByCustomerId(customerId);
-    return {
-      customer: customer.toJSON(),
-      addresses,
-    };
-  } catch (e) {
-    return [];
+  let customer = await Customer.findById(customerId);
+  let addresses = await CustomerAddress.findByCustomerId(customerId);
+  if (!customer) {
+    throw new Error("Customer not found");
   }
+  return {
+    customer: customer.toJSON(),
+    addresses,
+  };
 }
 
 export async function seedCustomersData(
