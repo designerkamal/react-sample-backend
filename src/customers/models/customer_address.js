@@ -12,7 +12,7 @@ const customerAddressSchema = new mongoose.Schema(
     country: String,
     zipCode: String,
     customerId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: "Customer",
     },
   },
